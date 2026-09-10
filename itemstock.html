@@ -4,128 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style>
-        input{
-            font-size: 2rem;
-            margin-left: 1vw;
-            font-family: 'Courier New', Courier, monospace;
-        }
-        button{
-            font-size: 2rem;
-            font-family: 'Courier New', Courier, monospace;
-            margin-left: 1vw;
-        }
-        table {
-            border-collapse: collapse;
-            width: 90%;
-            margin-top: 20px;
-            font-family: 'Courier New', Courier, monospace;
-        }
-        th, td {
-            border: 1px solid #333;
-            padding: 10px 15px;
-            text-align: left;
-        }
-        th {
-            background-color: #4A90E2;
-            color: white;
-        }
-        #searchInput{
-            margin-right: 100vw;
-            margin-bottom: 1vh;
-        }
-    </style>
-</head>
-<body>
-    <h1>Welcome To Stocks</h1>
-    <input type="text" id="searchInput" placeholder="Search by Invoice No or Name">
-    <input type="text" placeholder="Enter Name" id="input1">
-    <input type="number" placeholder="Enter Quantity" id="input2">
-    <input type="number" placeholder="Purchasing Price" id="input3">
-    <input type="number" placeholder="Selling Price" id="input4">
-    <button id="addBtn">Add</button>
+   <h1>Welcome To Stocks</h1>
+<input type="text" id="searchInput" placeholder="Search by Invoice No or Name">
+<input type="text" placeholder="Enter Name" id="input1">
+<input type="number" placeholder="Enter Quantity" id="input2">
+<input type="number" placeholder="Purchasing Price" id="input3">
+<input type="number" placeholder="Selling Price" id="input4">
+<button id="addBtn">Add</button>
 
-    <table id="stockTable">
-        <thead>
-            <tr>
-                <th>Invoice No.</th>
-                <th>Name</th>
-                <th>Quantity</th>
-                <th>Purchasing Price</th>
-                <th>Selling Price</th>
-            </tr>
-        </thead>
-        <tbody id="tableBody">
-            <!-- rows get added here -->
-        </tbody>
-    </table>
-
-     <script>
-        const btn = document.getElementById('addBtn');
-        const tableBody = document.getElementById('tableBody');
-        const searchInput = document.getElementById('searchInput');
-
-        let stockItems = JSON.parse(localStorage.getItem('stockItems')) || [];
-        let lastInvoiceNo = parseInt(localStorage.getItem('lastInvoiceNo')) || 0;
-
-        function generateInvoiceNo() {
-          lastInvoiceNo++;
-          localStorage.setItem('lastInvoiceNo', lastInvoiceNo);
-          return 'INV-' + String(lastInvoiceNo).padStart(4, '0');
-        }
-
-        function saveStock() {
-          localStorage.setItem('stockItems', JSON.stringify(stockItems));
-        }
-
-        function renderTable() {
-          tableBody.innerHTML = '';
-          stockItems.forEach(item => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-              <td>${item.invoiceNo}</td>
-              <td>${item.name}</td>
-              <td>${item.quantity}</td>
-              <td>${item.purchasePrice}</td>
-              <td>${item.sellPrice}</td>
-            `;
-            tableBody.appendChild(row);
-          });
-        }
-
-        btn.addEventListener('click', () => {
-          const val1 = document.getElementById('input1').value;
-          const val2 = document.getElementById('input2').value;
-          const val3 = document.getElementById('input3').value;
-          const val4 = document.getElementById('input4').value;
-          if (!val1 || !val2 || !val3 || !val4) return;
-
-          stockItems.push({
-            invoiceNo: generateInvoiceNo(),
-            name: val1,
-            quantity: parseInt(val2),
-            purchasePrice: parseFloat(val3),
-            sellPrice: parseFloat(val4)
-          });
-          saveStock();
-          renderTable();
-
-          document.getElementById('input1').value = '';
-          document.getElementById('input2').value = '';
-          document.getElementById('input3').value = '';
-          document.getElementById('input4').value = '';
-        });
-
-        searchInput.addEventListener('input', () => {
-          const term = searchInput.value.toLowerCase();
-          tableBody.querySelectorAll('tr').forEach(row => {
-            const invoiceNo = row.children[0].textContent.toLowerCase();
-            const name = row.children[1].textContent.toLowerCase();
-            row.style.display = (invoiceNo.includes(term) || name.includes(term)) ? '' : 'none';
-          });
-        });
-
-        renderTable();
-    </script>
+<table id="stockTable">
+    <thead>
+        <tr>
+            <th>Invoice No.</th>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Purchasing Price</th>
+            <th>Selling Price</th>
+        </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+</table>
 </body>
 </html>
